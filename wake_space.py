@@ -5,7 +5,7 @@ import os
 import sys
 import urllib.request
 
-SPACE = os.environ["SPACE_ID"].strip()
+SPACE = os.environ["nexapayz99/group-manager"].strip()
 TOKEN = os.environ["HF_TOKEN"].strip()
 RESTART_WHEN = {"SLEEPING", "RUNTIME_ERROR", "STOPPED"}
 
