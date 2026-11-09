@@ -1,0 +1,18 @@
+name: Wake Hugging Face Space
+on:
+  schedule:
+    - cron: "*/5 * * * *"      # every 5 minutes (GitHub's shortest interval)
+  workflow_dispatch: {}
+jobs:
+  wake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Check the Space and wake it if needed
+        env:
+          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          SPACE_ID: ${{ vars.SPACE_ID }}
+        run: python wake_space.py
