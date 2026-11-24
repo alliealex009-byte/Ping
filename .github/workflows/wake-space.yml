@@ -1,28 +1,26 @@
-name: Wake Hugging Face Space
-
+name: Keep Space awake (real browser visit)
 on:
   schedule:
-    - cron: "*/5 * * * *"
-  workflow_dispatch:
-
-permissions:
-  contents: read
-
+    - cron: "*/30 * * * *"      # every 30 minutes
+  workflow_dispatch: {}
 jobs:
-  wake:
+  visit:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-
-      - name: Check and wake Space
+      - name: Wake through the API if it is sleeping
         env:
           HF_TOKEN: ${{ secrets.HF_TOKEN }}
           SPACE_ID: ${{ vars.SPACE_ID }}
         run: python wake_space.py
+      - name: Visit the Space like a person (Chromium)
+        env:
+          SPACE_ID: ${{ vars.SPACE_ID }}
+          SPACE_URL: ${{ vars.SPACE_URL }}
+        run: |
+          pip install playwright
+          playwright install --with-deps chromium
+          python browser_visit.py
